@@ -22,54 +22,54 @@ public class MBWaySplitInsuranceController {
 		_elements = Integer.parseInt(elements);
 	}
 	
-	public void splitInsurance() throws AccountException {
-		ArrayList<String> target_person = _fmlist.get(0);
-		String target_iban = _mbway.getIbanFromPhone(target_person.get(0));
-		//access target account bank
-		String target_code = target_iban.substring(0, 3);
-		String target_accountId = target_iban.substring(3);
-		Bank target_bank = Bank.getBankByCode(target_code);
-		Account target_account = target_bank.getAccountByAccountId(target_accountId);
-		for (ArrayList<String> friend: _fmlist.subList(1, _fmlist.size())) {
-			//access source account bank
-			String iban = _mbway.getIbanFromPhone(friend.get(0));
-			int money = Integer.parseInt(friend.get(1));
-			//access source account bank
-			String code = iban.substring(0, 3);
-			String accountId = iban.substring(3);
-			Bank bank = Bank.getBankByCode(code);
-			Account account = bank.getAccountByAccountId(accountId);
-//			System.out.println("before transfer "+friend.get(0)+" "+account.getBalance());
-			account.withdraw(money);
-//			System.out.println("after transfer "+friend.get(0)+" "+account.getBalance());
-			target_account.deposit(money);
-		}
-	}
-
-	
 //	public void splitInsurance() throws AccountException {
 //		ArrayList<String> target_person = _fmlist.get(0);
+//		String target_iban = _mbway.getIbanFromPhone(target_person.get(0));
 //		//access target account bank
-//		String target_phone = target_person.get(0);
-//		Account target_account = getAccountFromPhone(target_phone);
+//		String target_code = target_iban.substring(0, 3);
+//		String target_accountId = target_iban.substring(3);
+//		Bank target_bank = Bank.getBankByCode(target_code);
+//		Account target_account = target_bank.getAccountByAccountId(target_accountId);
 //		for (ArrayList<String> friend: _fmlist.subList(1, _fmlist.size())) {
 //			//access source account bank
-//			String friend_phone = friend.get(0);
-//			Account friend_account = getAccountFromPhone(friend_phone);
+//			String iban = _mbway.getIbanFromPhone(friend.get(0));
 //			int money = Integer.parseInt(friend.get(1));
-//			friend_account.withdraw(money);
-//			target_account.withdraw(money);
+//			//access source account bank
+//			String code = iban.substring(0, 3);
+//			String accountId = iban.substring(3);
+//			Bank bank = Bank.getBankByCode(code);
+//			Account account = bank.getAccountByAccountId(accountId);
+////			System.out.println("before transfer "+friend.get(0)+" "+account.getBalance());
+//			account.withdraw(money);
+////			System.out.println("after transfer "+friend.get(0)+" "+account.getBalance());
+//			target_account.deposit(money);
 //		}
 //	}
+
 	
-//	public Account getAccountFromPhone(String phone) {
-//		String iban = _mbway.getIbanFromPhone(phone);
-//		String code = iban.substring(0, 3);
-//		String accountId = iban.substring(3);
-//		Bank bank = Bank.getBankByCode(code);
-//		Account account = bank.getAccountByAccountId(accountId);
-//		return account;
-//	}
+	public void splitInsurance() throws AccountException {
+		ArrayList<String> target_person = _fmlist.get(0);
+		//access target account bank
+		String target_phone = target_person.get(0);
+		Account target_account = getAccountFromPhone(target_phone);
+		for (ArrayList<String> friend: _fmlist.subList(1, _fmlist.size())) {
+			//access source account bank
+			String friend_phone = friend.get(0);
+			Account friend_account = getAccountFromPhone(friend_phone);
+			int money = Integer.parseInt(friend.get(1));
+			friend_account.withdraw(money);
+			target_account.withdraw(money);
+		}
+	}
+	
+	public Account getAccountFromPhone(String phone) {
+		String iban = _mbway.getIbanFromPhone(phone);
+		String code = iban.substring(0, 3);
+		String accountId = iban.substring(3);
+		Bank bank = Bank.getBankByCode(code);
+		Account account = bank.getAccountByAccountId(accountId);
+		return account;
+	}
 	
 	public boolean totalEqualsAmount() {
 		int total = 0;
